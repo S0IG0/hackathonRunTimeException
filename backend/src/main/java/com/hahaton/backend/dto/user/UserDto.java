@@ -1,4 +1,4 @@
-package com.hahaton.backend.dto;
+package com.hahaton.backend.dto.user;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -22,11 +22,11 @@ public class UserDto {
     @Size(max = 250, min = 1)
     private String name;
 
-    @NotBlank (message = "surname may not be blank or null")
+    @NotBlank(message = "surname may not be blank or null")
     @Size(max = 250, min = 1)
     private String surname;
 
-    @NotBlank (message = "address may not be blank or null")
+    @NotBlank(message = "address may not be blank or null")
     @Size(max = 250, min = 10)
     private String address;
 

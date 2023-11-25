@@ -7,7 +7,7 @@ public interface UserService {
 
     UserDto postUser(NewUserDto userDto);
 
-    UserDto patchUser (UserDto userDto);
+    UserDto patchUser(UserDto userDto);
 
     void deleteUser(Long userId);
 

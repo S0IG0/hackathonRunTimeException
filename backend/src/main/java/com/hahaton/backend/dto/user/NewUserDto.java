@@ -1,6 +1,5 @@
-package com.hahaton.backend.dto;
+package com.hahaton.backend.dto.user;
 
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -12,7 +11,6 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class NewUserDto {
-    private Long id;
 
     @Email(message = "email may not have incorrect format, be blank or null")
     @NotBlank
@@ -23,13 +21,17 @@ public class NewUserDto {
     @Size(max = 250, min = 1)
     private String name;
 
-    @NotBlank (message = "surname may not be blank or null")
+    @NotBlank(message = "surname may not be blank or null")
     @Size(max = 250, min = 1)
     private String surname;
 
 
-    @NotBlank (message = "address may not be blank or null")
+    @NotBlank(message = "address may not be blank or null")
     @Size(max = 250, min = 8)
     private String address;
+
+    @NotBlank(message = "password may not be blank or null")
+    @Size(max = 250, min = 8)
+    private String password;
 
 }

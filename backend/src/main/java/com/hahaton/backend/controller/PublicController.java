@@ -22,15 +22,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class PublicController {
     private final UserService userService;
 
-
-    @PostMapping("/register")
-    ResponseEntity<UserDto> postUser(@RequestBody @Validated NewUserDto newUserDto) {
+    @PostMapping("user/register")
+    ResponseEntity<UserDto> createUser(@RequestBody @Validated NewUserDto newUserDto) {
         log.info("User post accepted: {}", newUserDto);
         return new ResponseEntity<>(userService.postUser(newUserDto), HttpStatus.CREATED);
     }
-
-
-
 
 
 }
