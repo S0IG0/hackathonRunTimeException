@@ -2,12 +2,10 @@ package com.hahaton.backend.mapper;
 
 import com.hahaton.backend.dto.comment.CommentDto;
 import com.hahaton.backend.dto.comment.NewCommentDto;
-import com.hahaton.backend.dto.news.NewsShortDto;
 import com.hahaton.backend.dto.user.UserShortDto;
 import com.hahaton.backend.model.objects.Comment;
 import com.hahaton.backend.model.role.User;
 
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class CommentMapper {
@@ -29,10 +27,5 @@ public class CommentMapper {
                 .user(user)
                 .build();
 
-//        return Comment.builder()
-//                .id(commentDto.getId())
-//                .text(commentDto.getText())
-//                .commentDate(LocalDateTime.parse(commentDto.getCommentDate()))
-//                .user(user).build();
     }
 }
