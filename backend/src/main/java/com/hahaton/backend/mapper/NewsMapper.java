@@ -19,28 +19,28 @@ public class NewsMapper {
     private static final String DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
 
 
-    public static News toNews(NewNewsDto newNewsDto, Long surveyId, Organization organization) {
+    public static News toNews(NewNewsDto newNewsDto, Long surveyId, Organization organization, Long pictureId) {
         return News.builder()
                 .organization(organization)
                 .status(ModerationStatus.PENDING)
                 .newsTitle(newNewsDto.getTitle())
                 .location(newNewsDto.getLocation())
                 .newsDate(LocalDateTime.parse(newNewsDto.getDate(), DateTimeFormatter.ofPattern(DATE_TIME_PATTERN)))
-                .pictureId(1L)//todo: refactor picture saving process
+                .pictureId(pictureId)
                 .newsText(newNewsDto.getText())
                 .surveyId(surveyId)
                 .category(Category.getByRuName(newNewsDto.getCategory()))
                 .build();
     }
 
-    public static NewsDto toDto (News news, SurveyDto surveyDto, List<CommentDto> comments) {
+    public static NewsDto toDto (News news, SurveyDto surveyDto, List<CommentDto> comments, byte[] data) {
         return NewsDto.builder()
                 .id(news.getId())
                 .title(news.getNewsTitle())
                 .author(news.getOrganization())
                 .location(news.getLocation())
                 .date(news.getNewsDate().format(DateTimeFormatter.ofPattern(DATE_TIME_PATTERN)))
-                .picture(news.getPictureId().toString())//todo:refactor picture
+                .picture(data)
                 .text(news.getNewsText())
                 .survey(surveyDto)
                 .status(news.getStatus().getRuName())
@@ -49,14 +49,14 @@ public class NewsMapper {
                 .build();
     }
 
-    public static NewsShortDto toShortDto (News news) {
+    public static NewsShortDto toShortDto (News news, byte[] data) {
         return NewsShortDto.builder()
                 .id(news.getId())
                 .title(news.getNewsTitle())
                 .author(news.getOrganization())
                 .location(news.getLocation())
                 .date(news.getNewsDate().format(DateTimeFormatter.ofPattern(DATE_TIME_PATTERN)))
-                .picture(news.getPictureId().toString())//todo:refactor picture
+                .picture(data)//todo:refactor picture
                 .text(news.getNewsText())
                 .status(news.getStatus().getRuName())
                 .category(news.getCategory().getRuName())

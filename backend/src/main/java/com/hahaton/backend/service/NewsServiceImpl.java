@@ -19,7 +19,6 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.expression.AccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -33,16 +32,18 @@ public class NewsServiceImpl implements NewsService {
     private final SurveyService surveyService;
     private final CommentService commentService;
     private final LocationService locationService;
+    private final PictureService pictureService;
 
     @Override
     public NewsDto postNews(NewNewsDto newNewsDto, Long organizationId) {
         try {
             SurveyDto surveyDto = surveyService.createSurvey(newNewsDto.getSurvey(), organizationId);
-            News news = NewsMapper.toNews(newNewsDto, surveyDto.getId(), surveyDto.getOrganization());
+            Long pictureId = pictureService.postPicture(newNewsDto.getPicture());
+            News news = NewsMapper.toNews(newNewsDto, surveyDto.getId(), surveyDto.getOrganization(), pictureId);
             locationService.saveLocation(newNewsDto.getLocation());
             News savedNews = newsRepository.save(news);
             List<CommentDto> commentDtos = commentService.getNewsComments(savedNews.getId());
-            NewsDto newsDto = NewsMapper.toDto(savedNews, surveyDto, commentDtos);
+            NewsDto newsDto = NewsMapper.toDto(savedNews, surveyDto, commentDtos, pictureService.getPicture(news.getPictureId()).getData());
             log.info("saved news: {}", newsDto);
             return newsDto;
         } catch (ConstraintViolationException | DataIntegrityViolationException e) {
@@ -62,8 +63,8 @@ public class NewsServiceImpl implements NewsService {
         List<NewsShortDto> shortDtos = new ArrayList<>();
         for (News news :
                 newsList) {
-            if(news.getStatus().equals(ModerationStatus.PUBLISHED)){
-                shortDtos.add(NewsMapper.toShortDto(news));
+            if (news.getStatus().equals(ModerationStatus.PUBLISHED)) {
+                shortDtos.add(NewsMapper.toShortDto(news, pictureService.getPicture(news.getPictureId()).getData()));
             }
 
         }
@@ -75,12 +76,12 @@ public class NewsServiceImpl implements NewsService {
         News news = newsRepository.findById(newsId).orElseThrow(
                 () -> new NotFoundException("no such organization")
         );
-        if (!news.getStatus().equals(ModerationStatus.PUBLISHED)){
+        if (!news.getStatus().equals(ModerationStatus.PUBLISHED)) {
             throw new NotFoundException("Эта новость не опубликована");
         }
         SurveyDto surveyDto = surveyService.getSurveyDto(news.getSurveyId());
         List<CommentDto> commentDtos = commentService.getNewsComments(news.getId());
-        NewsDto newsDto = NewsMapper.toDto(news, surveyDto, commentDtos);
+        NewsDto newsDto = NewsMapper.toDto(news, surveyDto, commentDtos, pictureService.getPicture(news.getPictureId()).getData());
         log.info("found news: {}", newsDto);
         return newsDto;
     }
@@ -110,7 +111,8 @@ public class NewsServiceImpl implements NewsService {
         List<NewsShortDto> shortDtos = new ArrayList<>();
         for (News news :
                 newsList) {
-            shortDtos.add(NewsMapper.toShortDto(news));
+
+            shortDtos.add(NewsMapper.toShortDto(news, pictureService.getPicture(news.getPictureId()).getData()));
         }
         return shortDtos;
     }
