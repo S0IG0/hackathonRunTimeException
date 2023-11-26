@@ -134,10 +134,7 @@ public class NewsServiceImpl implements NewsService {
         for (Long i = 1L; i < 10; i++) {
             FileInputStream input = new FileInputStream("src/main/pictures/Дорога.jpg");
             byte[] data = input.readAllBytes();
-            Picture.builder()
-                    .data(data)
-                    .id(i)
-                    .build();
+            pictureService.postPicture(data);
         }
         for (Long i = 1L; i < 10; i++) {
             organizationRepository.save(Organization.builder()
