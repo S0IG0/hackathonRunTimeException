@@ -5,21 +5,25 @@ import com.hahaton.backend.dto.news.NewsDto;
 import com.hahaton.backend.dto.news.NewsShortDto;
 import com.hahaton.backend.dto.user.NewUserDto;
 import com.hahaton.backend.dto.user.UserDto;
+import com.hahaton.backend.exception.ImageException;
 import com.hahaton.backend.model.Category;
-import com.hahaton.backend.mongodb.ImageService;
+import com.hahaton.backend.model.Picture;
 import com.hahaton.backend.service.NewsService;
+import com.hahaton.backend.service.PictureService;
 import com.hahaton.backend.service.UserService;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -30,7 +34,7 @@ import java.util.List;
 public class PublicController {
     private final UserService userService;
     private final NewsService newsService;
-    private final ImageService imageService;
+    private final PictureService pictureService;
 
     @PostMapping("user/register")
     ResponseEntity<UserDto> createUser(@RequestBody @Validated NewUserDto newUserDto) {
@@ -64,11 +68,28 @@ public class PublicController {
     }
 
     @PostMapping("image")
-    ResponseEntity<Long> postImage (
+    ResponseEntity<Long> postImage(
             @RequestBody MultipartFile file
     ) {
-        Long id = imageService.putImage(file);
-        return ResponseEntity.ok(id);
+        try {
+            Long id = pictureService.postPicture(file.getBytes());
+            return ResponseEntity.ok(id);
+        } catch (IOException e) {
+            throw new ImageException(e.getMessage());
+        }
+
+    }
+
+
+    @GetMapping("image/{pictureId}")
+    ResponseEntity<byte[]> postPicture(
+            @PathVariable @Positive Long pictureId
+    ) {
+        byte[] data = pictureService.getPicture(pictureId).getData();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(org.springframework.http.MediaType.IMAGE_JPEG); // Замените на соответствующий MIME-тип вашего изображения
+        headers.setContentLength(data.length);
+        return new ResponseEntity<>(data, headers, HttpStatus.OK);
     }
 
 

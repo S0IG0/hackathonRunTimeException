@@ -11,12 +11,13 @@ services:
       - "/etc/localtime:/etc/localtime:ro"
     depends_on:
       - main-db
-      - pictures-db
+#      - pictures-db
 
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://main-db:5432/hahaton
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=postgres
+#      - SPRING_DATA_MONGODB_URI=mongodb://pictures-db:27017/pictures
 
   main-db:
     image: postgres:14-alpine
@@ -29,12 +30,14 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
 
-  pictures-db:
-    image: mongo
-    container_name: mongo-db-container
-    environment:
-      - MONGO_INITDB_DATABASE=pictures
-      - MONGO_INITDB_ROOT_USERNAME=mongodb
-      - MONGO_INITDB_ROOT_PASSWORD=mongodb
+#  pictures-db:
+#    image: mongo
+#    container_name: mongo-db-container
+#    ports:
+#      - "27017:27017"
+#    environment:
+#      - MONGO_INITDB_DATABASE=pictures
+#      - MONGO_INITDB_ROOT_USERNAME=mongodb
+#      - MONGO_INITDB_ROOT_PASSWORD=mongodb
 
 
