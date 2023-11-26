@@ -8,15 +8,18 @@ import com.hahaton.backend.dto.news.NewsShortDto;
 import com.hahaton.backend.dto.survey.SurveyDto;
 import com.hahaton.backend.exception.ConflictException;
 import com.hahaton.backend.exception.NotFoundException;
+import com.hahaton.backend.exception.ValidationException;
 import com.hahaton.backend.mapper.NewsMapper;
 import com.hahaton.backend.model.Category;
 import com.hahaton.backend.model.objects.News;
+import com.hahaton.backend.model.status.ModerationStatus;
 import com.hahaton.backend.repository.NewsRepository;
 import jakarta.validation.ConstraintViolationException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.expression.AccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -59,7 +62,10 @@ public class NewsServiceImpl implements NewsService {
         List<NewsShortDto> shortDtos = new ArrayList<>();
         for (News news :
                 newsList) {
-            shortDtos.add(NewsMapper.toShortDto(news));
+            if(news.getStatus().equals(ModerationStatus.PUBLISHED)){
+                shortDtos.add(NewsMapper.toShortDto(news));
+            }
+
         }
         return shortDtos;
     }
@@ -69,10 +75,43 @@ public class NewsServiceImpl implements NewsService {
         News news = newsRepository.findById(newsId).orElseThrow(
                 () -> new NotFoundException("no such organization")
         );
+        if (!news.getStatus().equals(ModerationStatus.PUBLISHED)){
+            throw new NotFoundException("Эта новость не опубликована");
+        }
         SurveyDto surveyDto = surveyService.getSurveyDto(news.getSurveyId());
         List<CommentDto> commentDtos = commentService.getNewsComments(news.getId());
         NewsDto newsDto = NewsMapper.toDto(news, surveyDto, commentDtos);
         log.info("found news: {}", newsDto);
         return newsDto;
+    }
+
+    @Override
+    public void moderateNews(Long newsId, boolean approved) {
+        News news = newsRepository.findById(newsId).orElseThrow(
+                () -> new NotFoundException("no such organization")
+        );
+        if (!news.getStatus().equals(ModerationStatus.PENDING)) {
+            throw new ValidationException("новость нельзя модерировать, её статус не ожидание");
+        }
+        if (approved) {
+            news.setStatus(ModerationStatus.PUBLISHED);
+        } else {
+            news.setStatus(ModerationStatus.REJECTED);
+        }
+        newsRepository.save(news);
+    }
+
+    @Override
+    public List<NewsShortDto> getNewsByStatus(ModerationStatus status, PageRequest pageRequest) {
+        List<News> newsList;
+
+        newsList = newsRepository.findAllByStatus(status, pageRequest);
+
+        List<NewsShortDto> shortDtos = new ArrayList<>();
+        for (News news :
+                newsList) {
+            shortDtos.add(NewsMapper.toShortDto(news));
+        }
+        return shortDtos;
     }
 }

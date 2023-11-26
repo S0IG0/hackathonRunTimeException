@@ -21,6 +21,23 @@ public class ErrorHandler {
 
     }
 
+    @ExceptionHandler({
+            IllegalArgumentException.class,
+    })
+    ResponseEntity<ErrorResponse> handleIllegalArgumentExceptions(final IllegalArgumentException e) {
+        log.error("Exception: " + e.getMessage(), e);
+        return new ResponseEntity<>(new ErrorResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
+
+    }
+
+    @ExceptionHandler({
+            ImageException.class,
+    })
+    ResponseEntity<ErrorResponse> handleImageExceptions(final IllegalArgumentException e) {
+        log.error("Exception: " + e.getMessage(), e);
+        return new ResponseEntity<>(new ErrorResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(NotFoundException.class)
     ResponseEntity<ErrorResponse> handleNotFoundExceptions(final NotFoundException e) {
         log.error("Exception: " + e.getMessage(), e);

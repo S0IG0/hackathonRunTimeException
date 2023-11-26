@@ -6,6 +6,7 @@ import com.hahaton.backend.dto.news.NewsShortDto;
 import com.hahaton.backend.dto.user.NewUserDto;
 import com.hahaton.backend.dto.user.UserDto;
 import com.hahaton.backend.model.Category;
+import com.hahaton.backend.mongodb.ImageService;
 import com.hahaton.backend.service.NewsService;
 import com.hahaton.backend.service.UserService;
 import jakarta.validation.constraints.Positive;
@@ -17,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -28,6 +30,7 @@ import java.util.List;
 public class PublicController {
     private final UserService userService;
     private final NewsService newsService;
+    private final ImageService imageService;
 
     @PostMapping("user/register")
     ResponseEntity<UserDto> createUser(@RequestBody @Validated NewUserDto newUserDto) {
@@ -58,6 +61,14 @@ public class PublicController {
         log.info("Get news by id request accepted: {}", newsId);
 
         return ResponseEntity.ok(newsService.getNewsById(newsId));
+    }
+
+    @PostMapping("image")
+    ResponseEntity<Long> postImage (
+            @RequestBody MultipartFile file
+    ) {
+        Long id = imageService.putImage(file);
+        return ResponseEntity.ok(id);
     }
 
 
