@@ -1,6 +1,8 @@
 package com.hahaton.backend.dto.request;
 
+import com.hahaton.backend.dto.comment.CommentDto;
 import com.hahaton.backend.dto.organization.OrganizationDto;
+import com.hahaton.backend.dto.response.ResponseDto;
 import com.hahaton.backend.dto.user.UserDto;
 import com.hahaton.backend.model.objects.Response;
 import jakarta.validation.constraints.NotBlank;
@@ -35,5 +37,11 @@ public class RequestDto {
     private String date;
 
     private String status;
+
+    private byte[] picture;
+
+    private List<CommentDto> comments;
+
+    private List<ResponseDto> responses;
 
 }
