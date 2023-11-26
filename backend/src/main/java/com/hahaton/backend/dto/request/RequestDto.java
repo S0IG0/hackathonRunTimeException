@@ -1,10 +1,10 @@
 package com.hahaton.backend.dto.request;
 
 import com.hahaton.backend.dto.comment.CommentDto;
-import com.hahaton.backend.dto.organization.OrganizationDto;
+import com.hahaton.backend.dto.organization.OrganizationShortDto;
 import com.hahaton.backend.dto.response.ResponseDto;
-import com.hahaton.backend.dto.user.UserDto;
-import com.hahaton.backend.model.objects.Response;
+import com.hahaton.backend.dto.user.UserShortDto;
+import com.hahaton.backend.model.status.RequestStatus;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -30,13 +30,13 @@ public class RequestDto {
     @Size(max = 254, min = 1)
     private String text;
 
-    private UserDto initiator;
-    private OrganizationDto receiver;
+    private UserShortDto initiator;
+    private OrganizationShortDto receiver;
 
     @DateTimeFormat(pattern = DATE_TIME_PATTERN)
     private String date;
 
-    private String status;
+    private RequestStatus status;
 
     private byte[] picture;
 
