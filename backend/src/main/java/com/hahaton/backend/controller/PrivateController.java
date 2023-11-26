@@ -3,6 +3,8 @@ package com.hahaton.backend.controller;
 
 import com.hahaton.backend.dto.comment.CommentDto;
 import com.hahaton.backend.dto.comment.NewCommentDto;
+import com.hahaton.backend.dto.request.NewRequestDto;
+import com.hahaton.backend.dto.request.RequestDto;
 import com.hahaton.backend.dto.user.UserDto;
 import com.hahaton.backend.service.CommentService;
 import com.hahaton.backend.service.UserService;
@@ -56,5 +58,12 @@ public class PrivateController {
         log.info("Add comment to request with id={}, from user with id={}", requestId, userId);
         return new ResponseEntity<>(commentService.addCommentToNews(newCommentDto, requestId, userId), HttpStatus.OK);
     }
-
+    @PostMapping("/users/{userId}/request/{organizationId}")
+    ResponseEntity<RequestDto> createRequest(@PathVariable("userId") Long userId,
+                                             @PathVariable("organizationId") Long organizationId,
+                                             @RequestBody NewRequestDto newRequestDto){
+        log.info("User with id={} created request to organization with id={}", userId, organizationId);
+        return null;
+//        return new ResponseEntity<>(commentService.addCommentToNews(newCommentDto, requestId, userId), HttpStatus.OK)
+    }
 }
