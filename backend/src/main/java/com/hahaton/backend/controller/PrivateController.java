@@ -1,7 +1,7 @@
 package com.hahaton.backend.controller;
 
 
-import com.hahaton.backend.dto.UserDto;
+import com.hahaton.backend.dto.user.UserDto;
 import com.hahaton.backend.service.UserService;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;

@@ -1,8 +1,8 @@
 package com.hahaton.backend.service;
 
 
-import com.hahaton.backend.dto.NewUserDto;
-import com.hahaton.backend.dto.UserDto;
+import com.hahaton.backend.dto.user.NewUserDto;
+import com.hahaton.backend.dto.user.UserDto;
 import com.hahaton.backend.exception.ConflictException;
 import com.hahaton.backend.exception.NotFoundException;
 import com.hahaton.backend.mapper.UserMapper;

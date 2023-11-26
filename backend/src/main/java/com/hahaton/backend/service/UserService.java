@@ -1,7 +1,7 @@
 package com.hahaton.backend.service;
 
-import com.hahaton.backend.dto.NewUserDto;
-import com.hahaton.backend.dto.UserDto;
+import com.hahaton.backend.dto.user.NewUserDto;
+import com.hahaton.backend.dto.user.UserDto;
 
 public interface UserService {
 
