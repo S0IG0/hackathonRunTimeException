@@ -37,7 +37,7 @@ public class NewsDto {
     @DateTimeFormat(pattern = DATE_TIME_PATTERN)
     private String date;
 
-    private String picture;
+    private byte[] picture;
 
     @NotBlank(message = "news text may not be blank or null")
     private String text;

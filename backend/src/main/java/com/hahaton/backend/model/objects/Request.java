@@ -9,6 +9,7 @@ import lombok.*;
 import org.hibernate.annotations.GenerationTime;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -43,7 +44,7 @@ public class Request {
 
     @Column(name = "request_date")
     @org.hibernate.annotations.Generated(GenerationTime.INSERT)
-    private LocalDateTime newsDate;
+    private LocalDateTime requestDate;
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)

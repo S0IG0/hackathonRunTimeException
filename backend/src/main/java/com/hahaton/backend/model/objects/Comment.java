@@ -39,7 +39,7 @@ public class Comment {
 
     @Column(name = "comment_date")
     @org.hibernate.annotations.Generated(GenerationTime.INSERT)
-    private LocalDateTime eventsDate;
+    private LocalDateTime commentDate;
 
 
 }
