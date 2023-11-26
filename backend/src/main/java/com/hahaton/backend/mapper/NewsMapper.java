@@ -56,7 +56,7 @@ public class NewsMapper {
                 .author(news.getOrganization())
                 .location(news.getLocation())
                 .date(news.getNewsDate().format(DateTimeFormatter.ofPattern(DATE_TIME_PATTERN)))
-                .picture(data)//todo:refactor picture
+                .picture(data)
                 .text(news.getNewsText())
                 .status(news.getStatus().getRuName())
                 .category(news.getCategory().getRuName())

@@ -7,10 +7,15 @@ import com.hahaton.backend.dto.user.NewUserDto;
 import com.hahaton.backend.dto.user.UserDto;
 import com.hahaton.backend.exception.ImageException;
 import com.hahaton.backend.model.Category;
+import com.hahaton.backend.model.Location;
 import com.hahaton.backend.model.Picture;
+import com.hahaton.backend.model.objects.News;
+import com.hahaton.backend.model.role.Organization;
+import com.hahaton.backend.model.status.ModerationStatus;
 import com.hahaton.backend.service.NewsService;
 import com.hahaton.backend.service.PictureService;
 import com.hahaton.backend.service.UserService;
+import jakarta.annotation.PostConstruct;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AllArgsConstructor;
@@ -91,6 +96,7 @@ public class PublicController {
         headers.setContentLength(data.length);
         return new ResponseEntity<>(data, headers, HttpStatus.OK);
     }
+
 
 
 }

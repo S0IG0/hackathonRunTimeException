@@ -1,19 +1,19 @@
--- drop table if exists
---     users,
---     admins,
---     organizations,
---     news,
---     locations,
---     surveys,
---     survey_options,
---     survey_answers,
---     events,
---     comments,
---     requests,
---     responses,
---     ratings,
---     images
---     CASCADE;
+drop table if exists
+    users,
+    admins,
+    organizations,
+    news,
+    locations,
+    surveys,
+    survey_options,
+    survey_answers,
+    events,
+    comments,
+    requests,
+    responses,
+    ratings,
+    images
+    CASCADE;
 
 create table if not exists organizations
 (
