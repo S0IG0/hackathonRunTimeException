@@ -7,16 +7,21 @@
     "dev": "vite --host",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "generate-types": "npx swagger-typescript-api -p swagger/openapi.json -o src/component/api/ -n type.ts"
   },
   "dependencies": {
+    "@pbe/react-yandex-maps": "^1.2.5",
     "@types/react-transition-group": "^4.4.9",
+    "axios": "^1.6.2",
     "bootstrap": "^5.3.2",
     "bootstrap-icons": "^1.11.2",
+    "mobx": "^6.11.0",
+    "mobx-react-lite": "^4.0.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.20.0",
-    "react-transition-group": "^4.4.5",
+    "react-transition-group": "^4.4.5"
   },
   "devDependencies": {
     "@types/react": "^18.2.37",
@@ -27,6 +32,7 @@
     "eslint": "^8.53.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.4",
+    "swagger-typescript-api": "^13.0.3",
     "typescript": "^5.2.2",
     "vite": "^5.0.0"
   }

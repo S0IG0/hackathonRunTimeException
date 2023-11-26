@@ -1,0 +1,2346 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "description": "Documentation \"Hahaton\" API v1.0",
+    "title": "\"Hahaton\" API сервер",
+    "version": "1.0"
+  },
+  "tags": [
+    {
+      "description": "Открытый API",
+      "name": "Все публичные запросы"
+    },
+    {
+      "description": "Пользовательский API",
+      "name": "Пользователи"
+    },
+    {
+      "description": "Админский API",
+      "name": "Администратор"
+    },
+    {
+      "description": "Организаторский API",
+      "name": "Организации"
+    }
+  ],
+  "paths": {
+    "/request/{requestId}/comment/{userId}": {
+        "post": {
+            "description": "Создание комментария под выбранным запросом",
+            "operationId": "createRequestComment",
+            "requestBody": {
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/NewCommentDto"
+                        }
+                    }
+                }
+            },
+            "parameters": [
+                {
+                    "description": "ID пользователя",
+                    "in": "path",
+                    "name": "userId",
+                    "required": true,
+                    "schema": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                },
+                {
+                    "description": "ID запроса",
+                    "in": "path",
+                    "name": "requestId",
+                    "required": true,
+                    "schema": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                }
+            ],
+            "responses": {
+                "201": {
+                    "content": {
+                    "application/json": {
+                        "schema": {
+                        "$ref": "#/components/schemas/CommentDto"
+                        }
+                    }
+                    },
+                    "description": "Комментарий оставлен"
+                },
+                "400": {
+                    "content": {
+                    "application/json": {
+                        "example": {
+                        "status": "BAD_REQUEST",
+                        "reason": "Incorrectly made request.",
+                        "message": "Failed to convert value of type java.lang.String to required type long; nested exception is java.lang.NumberFormatException: For input string: ad",
+                        "timestamp": "2022-09-07 09:10:50"
+                        },
+                        "schema": {
+                        "$ref": "#/components/schemas/ApiError"
+                        }
+                    }
+                    },
+                    "description": "Запрос составлен некорректно"
+                },
+                "404": {
+                    "content": {
+                    "application/json": {
+                        "example": {
+                        "status": "NOT_FOUND",
+                        "reason": "The required object was not found.",
+                        "message": "Request with id=13 was not found",
+                        "timestamp": "2022-09-07 09:10:50"
+                        },
+                        "schema": {
+                            "$ref": "#/components/schemas/ApiError"
+                        }
+                    }
+                    },
+                    "description": "Запрос/пользователь не найдены"
+                }
+            },
+            "summary": "Добавление комментария к запросу",
+            "tags": [
+                "Пользователи"
+            ]
+        }
+    },
+    "/news/{newsId}/survey/{userId}": {
+        "post": {
+            "description": "Выбор ответа в опросе",
+            "operationId": "answerSurvey",
+            "parameters": [
+                {
+                    "description": "ID пользователя",
+                    "in": "path",
+                    "name": "userId",
+                    "required": true,
+                    "schema": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                },
+                {
+                    "description": "ID новости",
+                    "in": "path",
+                    "name": "newsId",
+                    "required": true,
+                    "schema": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                },
+                {
+                    "description": "ID варианта ответа",
+                    "in": "query",
+                    "name": "optionId",
+                    "required": true,
+                    "schema": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                }
+            ],
+            "responses": {
+                "201": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SurveyDto"
+                            }
+                        }
+                    },
+                    "description": "Участие в голосовании принято"
+                },
+                "400": {
+                    "content": {
+                        "application/json": {
+                            "example": {
+                            "status": "BAD_REQUEST",
+                            "reason": "Incorrectly made request.",
+                            "message": "Failed to convert value of type java.lang.String to required type long; nested exception is java.lang.NumberFormatException: For input string: ad",
+                            "timestamp": "2022-09-07 09:10:50"
+                            },
+                            "schema": {
+                            "$ref": "#/components/schemas/ApiError"
+                            }
+                        }
+                    },
+                    "description": "Запрос составлен некорректно"
+                },
+                "404": {
+                    "content": {
+                    "application/json": {
+                        "example": {
+                        "status": "NOT_FOUND",
+                        "reason": "The required object was not found.",
+                        "message": "News with id=13 was not found",
+                        "timestamp": "2022-09-07 09:10:50"
+                        },
+                        "schema": {
+                            "$ref": "#/components/schemas/ApiError"
+                        }
+                    }
+                    },
+                    "description": "Новость/пользователь не найдены"
+                }
+            },
+            "summary": "Принятие участие в опросе",
+            "tags": [
+                "Пользователи"
+            ]
+        }
+    },
+    "/news/{newsId}/comment/{userId}": {
+        "post": {
+            "description": "Создание комментария под выбранной новостью",
+            "operationId": "createNewsComment",
+            "requestBody": {
+                "content": {
+                "application/json": {
+                    "schema": {
+                    "$ref": "#/components/schemas/NewCommentDto"
+                    }
+                    }
+                }
+            },
+            "parameters": [
+                {
+                    "description": "ID пользователя",
+                    "in": "path",
+                    "name": "userId",
+                    "required": true,
+                    "schema": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                },
+                {
+                    "description": "ID новости",
+                    "in": "path",
+                    "name": "newsId",
+                    "required": true,
+                    "schema": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                }
+            ],
+            "responses": {
+                "201": {
+                    "content": {
+                    "application/json": {
+                        "schema": {
+                        "$ref": "#/components/schemas/CommentDto"
+                        }
+                    }
+                    },
+                    "description": "Комментарий создан"
+                },
+                "400": {
+                    "content": {
+                    "application/json": {
+                        "example": {
+                        "status": "BAD_REQUEST",
+                        "reason": "Incorrectly made request.",
+                        "message": "Failed to convert value of type java.lang.String to required type long; nested exception is java.lang.NumberFormatException: For input string: ad",
+                        "timestamp": "2022-09-07 09:10:50"
+                        },
+                        "schema": {
+                        "$ref": "#/components/schemas/ApiError"
+                        }
+                    }
+                    },
+                    "description": "Запрос составлен некорректно"
+                },
+                "404": {
+                    "content": {
+                    "application/json": {
+                        "example": {
+                        "status": "NOT_FOUND",
+                        "reason": "The required object was not found.",
+                        "message": "News with id=13 was not found",
+                        "timestamp": "2022-09-07 09:10:50"
+                        },
+                        "schema": {
+                            "$ref": "#/components/schemas/ApiError"
+                        }
+                    }
+                    },
+                    "description": "Новость/пользователь не найдены"
+                }
+            },
+            "summary": "Добавлен комментарий к новости",
+            "tags": [
+                "Пользователи"
+            ]
+        }
+    },
+    "/event/{eventId}/comment/{userId}": {
+        "post": {
+            "description": "Создание комментария к мероприятию",
+            "operationId": "createEventComment",
+            "requestBody": {
+                "content": {
+                    "application/json": {
+                    "schema": {
+                        "$ref": "#/components/schemas/NewCommentDto"
+                        }
+                    }
+                }
+            },
+            "parameters": [
+                {
+                    "description": "ID пользователя",
+                    "in": "path",
+                    "name": "userId",
+                    "required": true,
+                    "schema": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                },
+                {
+                    "description": "ID мероприятия",
+                    "in": "path",
+                    "name": "eventId",
+                    "required": true,
+                    "schema": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                }
+            ],
+            "responses": {
+                "201": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                            "$ref": "#/components/schemas/CommentDto"
+                            }
+                        }
+                    },
+                    "description": "Комментарий оставлен"
+                },
+                "400": {
+                    "content": {
+                        "application/json": {
+                            "example": {
+                            "status": "BAD_REQUEST",
+                            "reason": "Incorrectly made request.",
+                            "message": "Failed to convert value of type java.lang.String to required type long; nested exception is java.lang.NumberFormatException: For input string: ad",
+                            "timestamp": "2022-09-07 09:10:50"
+                            },
+                            "schema": {
+                            "$ref": "#/components/schemas/ApiError"
+                            }
+                        }
+                    },
+                    "description": "Запрос составлен некорректно"
+                },
+                "404": {
+                    "content": {
+                    "application/json": {
+                        "example": {
+                        "status": "NOT_FOUND",
+                        "reason": "The required object was not found.",
+                        "message": "Event with id=13 was not found",
+                        "timestamp": "2022-09-07 09:10:50"
+                        },
+                        "schema": {
+                            "$ref": "#/components/schemas/ApiError"
+                        }
+                    }
+                    },
+                    "description": "Мероприятие/пользователь не найдены"
+                }
+            },
+            "summary": "Добавление комментария к мероприятию",
+            "tags": [
+                "Пользователи"
+            ]
+        }
+    },
+
+    "/organization/{organizationId}/news": {
+        "post": {
+            "description": "Создание новости организацией",
+            "operationId": "createNews",
+            "requestBody": {
+                "content": {
+                    "application/json": {
+                    "schema": {
+                        "$ref": "#/components/schemas/NewNewsDto"
+                        }
+                    }
+                }
+            },
+            "parameters": [
+                {
+                    "description": "ID организации",
+                    "in": "path",
+                    "name": "organizationId",
+                    "required": true,
+                    "schema": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                }
+            ],
+            "responses": {
+                "201": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                            "$ref": "#/components/schemas/NewsDto"
+                            }
+                        }
+                    },
+                    "description": "Новость создана"
+                },
+                "400": {
+                    "content": {
+                        "application/json": {
+                            "example": {
+                            "status": "BAD_REQUEST",
+                            "reason": "Incorrectly made request.",
+                            "message": "Failed to convert value of type java.lang.String to required type long; nested exception is java.lang.NumberFormatException: For input string: ad",
+                            "timestamp": "2022-09-07 09:10:50"
+                            },
+                            "schema": {
+                            "$ref": "#/components/schemas/ApiError"
+                            }
+                        }
+                    },
+                    "description": "Запрос составлен некорректно"
+                },
+                "404": {
+                    "content": {
+                    "application/json": {
+                        "example": {
+                        "status": "NOT_FOUND",
+                        "reason": "The required object was not found.",
+                        "message": "Organization with id=13 was not found",
+                        "timestamp": "2022-09-07 09:10:50"
+                        },
+                        "schema": {
+                            "$ref": "#/components/schemas/ApiError"
+                        }
+                    }
+                    },
+                    "description": "Организация не найдена"
+                }
+            },
+            "summary": "Создание новости",
+            "tags": [
+                "Организации"
+            ]
+        }
+    },
+    "/organization/{organizationId}/event": {
+        "post": {
+            "description": "Создание мероприятия организацией",
+            "operationId": "createEvent",
+            "requestBody": {
+                "content": {
+                    "application/json": {
+                    "schema": {
+                        "$ref": "#/components/schemas/NewEventDto"
+                        }
+                    }
+                }
+            },
+            "parameters": [
+                {
+                    "description": "ID организации",
+                    "in": "path",
+                    "name": "organizationId",
+                    "required": true,
+                    "schema": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                }
+            ],
+            "responses": {
+                "201": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                            "$ref": "#/components/schemas/EventDto"
+                            }
+                        }
+                    },
+                    "description": "Мероприятие создано"
+                },
+                "400": {
+                    "content": {
+                        "application/json": {
+                            "example": {
+                            "status": "BAD_REQUEST",
+                            "reason": "Incorrectly made request.",
+                            "message": "Failed to convert value of type java.lang.String to required type long; nested exception is java.lang.NumberFormatException: For input string: ad",
+                            "timestamp": "2022-09-07 09:10:50"
+                            },
+                            "schema": {
+                            "$ref": "#/components/schemas/ApiError"
+                            }
+                        }
+                    },
+                    "description": "Запрос составлен некорректно"
+                },
+                "404": {
+                    "content": {
+                    "application/json": {
+                        "example": {
+                        "status": "NOT_FOUND",
+                        "reason": "The required object was not found.",
+                        "message": "Organization with id=13 was not found",
+                        "timestamp": "2022-09-07 09:10:50"
+                        },
+                        "schema": {
+                            "$ref": "#/components/schemas/ApiError"
+                        }
+                    }
+                    },
+                    "description": "Организация не найдена"
+                }
+            },
+            "summary": "Создание мероприятия",
+            "tags": [
+                "Организации"
+            ]
+        }
+    },
+    "/organization/{organizationId}/requests/{requestId}": {
+        "post": {
+            "description": "Ответ организацией на отправленный ей запрос",
+            "operationId": "answerRequest",
+            "requestBody": {
+                "content": {
+                    "application/json": {
+                    "schema": {
+                        "$ref": "#/components/schemas/NewResponseDto"
+                        }
+                    }
+                }
+            },
+            "parameters": [
+                {
+                    "description": "ID организации",
+                    "in": "path",
+                    "name": "organizationId",
+                    "required": true,
+                    "schema": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                },
+                {
+                    "description": "ID запроса",
+                    "in": "path",
+                    "name": "requestId",
+                    "required": true,
+                    "schema": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                }
+            ],
+            "responses": {
+                "201": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                            "$ref": "#/components/schemas/ResponseDto"
+                            }
+                        }
+                    },
+                    "description": "Ответ отправлен"
+                },
+                "400": {
+                    "content": {
+                        "application/json": {
+                            "example": {
+                            "status": "BAD_REQUEST",
+                            "reason": "Incorrectly made request.",
+                            "message": "Failed to convert value of type java.lang.String to required type long; nested exception is java.lang.NumberFormatException: For input string: ad",
+                            "timestamp": "2022-09-07 09:10:50"
+                            },
+                            "schema": {
+                            "$ref": "#/components/schemas/ApiError"
+                            }
+                        }
+                    },
+                    "description": "Запрос составлен некорректно"
+                },
+                "404": {
+                    "content": {
+                    "application/json": {
+                        "example": {
+                        "status": "NOT_FOUND",
+                        "reason": "The required object was not found.",
+                        "message": "Request with id=13 was not found",
+                        "timestamp": "2022-09-07 09:10:50"
+                        },
+                        "schema": {
+                            "$ref": "#/components/schemas/ApiError"
+                        }
+                    }
+                    },
+                    "description": "Организация/запрос не найдены"
+                }
+            },
+            "summary": "Создание ответа на запроса",
+            "tags": [
+                "Организации"
+            ]
+        },
+        "patch": {
+            "description": "Изменение статуса запроса",
+            "operationId": "patchStatus",
+            "parameters": [
+                {
+                    "description": "ID организации",
+                    "in": "path",
+                    "name": "organizationId",
+                    "required": true,
+                    "schema": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                },
+                {
+                    "description": "ID запроса",
+                    "in": "path",
+                    "name": "requestId",
+                    "required": true,
+                    "schema": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                },
+                {
+                    "description": "Статус запроса",
+                    "in": "query",
+                    "name": "status",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/components/schemas/RequestStatus"
+                    }
+                }
+            ],
+            "responses": {
+                "201": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                            "$ref": "#/components/schemas/RequestDto"
+                            }
+                        }
+                    },
+                    "description": "Статус изменен"
+                },
+                "400": {
+                    "content": {
+                        "application/json": {
+                            "example": {
+                            "status": "BAD_REQUEST",
+                            "reason": "Incorrectly made request.",
+                            "message": "Failed to convert value of type java.lang.String to required type long; nested exception is java.lang.NumberFormatException: For input string: ad",
+                            "timestamp": "2022-09-07 09:10:50"
+                            },
+                            "schema": {
+                            "$ref": "#/components/schemas/ApiError"
+                            }
+                        }
+                    },
+                    "description": "Запрос составлен некорректно"
+                },
+                "404": {
+                    "content": {
+                    "application/json": {
+                        "example": {
+                        "status": "NOT_FOUND",
+                        "reason": "The required object was not found.",
+                        "message": "Request with id=13 was not found",
+                        "timestamp": "2022-09-07 09:10:50"
+                        },
+                        "schema": {
+                            "$ref": "#/components/schemas/ApiError"
+                        }
+                    }
+                    },
+                    "description": "Организация/запрос не найдены"
+                }
+            },
+            "summary": "Изменение статуса запроса",
+            "tags": [
+                "Организации"
+            ]
+        }
+    },
+
+    "/admin/news": {
+      "get": {
+        "description": "В случае, если категория новостей не передана, возвращаются все новости, отсортированные по времени",
+        "operationId": "getNewsAdmin",
+        "parameters": [
+          {
+            "description": "искать подборки определенной категории",
+            "in": "query",
+            "name": "category",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Номер страницы",
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "minimum": 1,
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "description": "количество элементов на странице",
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/NewsDto"
+                  }
+                }
+              }
+            },
+            "description": "Найдены новости"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "BAD_REQUEST",
+                  "reason": "Incorrectly made request.",
+                  "message": "Failed to convert value of type java.lang.String to required type int; nested exception is java.lang.NumberFormatException: For input string: ad",
+                  "timestamp": "2022-09-07 09:10:50"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Запрос составлен некорректно"
+          }
+        },
+        "summary": "Получение новостей по категории",
+        "tags": [
+          "Администратор"
+        ]
+      }
+    },
+    "/admin/events": {
+      "get": {
+        "description": "В случае, если категория события не передана, возвращаются все события, отсортированные по времени",
+        "operationId": "getEventsAdmin",
+        "parameters": [
+          {
+            "description": "Искать события определенной категории",
+            "in": "query",
+            "name": "category",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Номер страницы",
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "minimum": 1,
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "description": "Количество элементов на странице",
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EventDto"
+                  }
+                }
+              }
+            },
+            "description": "Найдены мероприятия"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "BAD_REQUEST",
+                  "reason": "Incorrectly made request.",
+                  "message": "Failed to convert value of type java.lang.String to required type int; nested exception is java.lang.NumberFormatException: For input string: ad",
+                  "timestamp": "2022-09-07 09:10:50"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Запрос составлен некорректно"
+          }
+        },
+        "summary": "Получение событий по категории",
+        "tags": [
+          "Администратор"
+        ]
+      }
+    },
+    "/admin/delete-user/{id}": {
+      "delete": {
+        "description": "",
+        "operationId": "deleteUser",
+        "parameters": [
+          {
+            "description": "id пользователя на удаление",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Операция удаления выполнена успешно"
+          },
+          "404": {
+            "description": "Пользователь небыл найден"
+          },
+          "500": {
+            "description": "Внутреняя ошибка сервера"
+          }
+        },
+        "summary": "Удаления пользоателя по id",
+        "tags": [
+          "Администратор"
+        ]
+      }
+    },
+    "/admin/register-orginization": {
+      "post": {
+        "description": "Администратор заполняет поля на основе полученной бухгалтерии",
+        "operationId": "registerOrginization",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewOrginizationDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Операция регистрации была выполнена успешна"
+          },
+          "400": {
+            "description": "Ошибка заполенния данных запрос завершился с ошибкой"
+          },
+          "500": {
+            "description": "Внутреняя ошибка сервера"
+          }
+        },
+        "summary": "Регистрация новой Эксплуатирующей организации",
+        "tags": [
+          "Администратор"
+        ]
+      }
+    },
+    "/admin/moderation-news/{id}": {
+      "post": {
+        "description": "Администратор просматривает новость, если новость проходит по модерции он передает в query параметре approved значение true",
+        "operationId": "moderationNews",
+        "parameters": [
+          {
+            "description": "id новости на модерации",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "description": "Статус одобрения новости (true - одобрена, false - отклонена)",
+            "in": "query",
+            "name": "approved",
+            "required": true,
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Операция выполенна успешна"
+          },
+          "400": {
+            "description": "ошибка в передоваемых параметрах"
+          },
+          "404": {
+            "description": "Ошибка указания id новости, новость была не найдена"
+          },
+          "500": {
+            "description": "Внутреняя ошибка сервера"
+          }
+        },
+        "summary": "Модерации новостного поста по указанному id",
+        "tags": [
+          "Администратор"
+        ]
+      }
+    },
+    "/admin/moderation-event/{id}": {
+      "post": {
+        "description": "Администратор просматривает событие, если событие проходит по модерции он передает в query параметре approved значение true",
+        "operationId": "moderationEvent",
+        "parameters": [
+          {
+            "description": "id события на модерации",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "description": "Статус одобрения события (true - одобрена, false - отклонена)",
+            "in": "query",
+            "name": "approved",
+            "required": true,
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Операция выполенна успешна"
+          },
+          "400": {
+            "description": "Ошибка в передоваемых параметрах"
+          },
+          "404": {
+            "description": "Ошибка указания id события, событие не собыло найдено"
+          },
+          "500": {
+            "description": "Внутреняя ошибка сервера"
+          }
+        },
+        "summary": "Модерации события по указанному id",
+        "tags": [
+          "Администратор"
+        ]
+      }
+    },
+    "/users/{userId}/request/{organizationId}": {
+      "post": {
+        "description": "Создание запроса от жителя города в выбранную муниципальную службу/организацию",
+        "operationId": "createRequest",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewRequestDto"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "description": "ID пользователя",
+            "in": "path",
+            "name": "userId",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "description": "ID организации",
+            "in": "path",
+            "name": "organizationId",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NewRequestDto"
+                }
+              }
+            },
+            "description": "Запрос создан"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "BAD_REQUEST",
+                  "reason": "Incorrectly made request.",
+                  "message": "Failed to convert value of type java.lang.String to required type long; nested exception is java.lang.NumberFormatException: For input string: ad",
+                  "timestamp": "2022-09-07 09:10:50"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Запрос составлен некорректно"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "NOT_FOUND",
+                  "reason": "The required object was not found.",
+                  "message": "Organization with id=13 was not found",
+                  "timestamp": "2022-09-07 09:10:50"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Компания/пользователь не найдены"
+          }
+        },
+        "summary": "Создание нового запроса в организацию",
+        "tags": [
+          "Пользователи"
+        ]
+      }
+    },
+    "/users/{userId}": {
+      "get": {
+        "description": "Получение данных о пользователе по ID",
+        "operationId": "getUser",
+        "parameters": [
+          {
+            "description": "ID пользователя",
+            "in": "path",
+            "name": "userId",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserDto"
+                  }
+                }
+              }
+            },
+            "description": "Найден пользователь"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "BAD_REQUEST",
+                  "reason": "Incorrectly made request.",
+                  "message": "Failed to convert value of type java.lang.String to required type int; nested exception is java.lang.NumberFormatException: For input string: ad",
+                  "timestamp": "2022-09-07 09:10:50"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Запрос составлен некорректно"
+          }
+        },
+        "summary": "Получение пользователя по ID",
+        "tags": [
+          "Пользователи"
+        ]
+      },
+      "patch": {
+        "description": "Редактирование своих данных пользователя",
+        "operationId": "patchUser",
+        "parameters": [
+          {
+            "description": "ID пользователя",
+            "in": "path",
+            "name": "userId",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserDto"
+                  }
+                }
+              }
+            },
+            "description": "Найден пользователь"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "BAD_REQUEST",
+                  "reason": "Incorrectly made request.",
+                  "message": "Failed to convert value of type java.lang.String to required type int; nested exception is java.lang.NumberFormatException: For input string: ad",
+                  "timestamp": "2022-09-07 09:10:50"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Запрос составлен некорректно"
+          }
+        },
+        "summary": "Обновление пользователя по ID",
+        "tags": [
+          "Пользователи"
+        ]
+      },
+      "delete": {
+        "description": "Удаление пользователем своей учетной записи",
+        "operationId": "deleteUserByUser",
+        "parameters": [
+          {
+            "description": "ID пользователя",
+            "in": "path",
+            "name": "userId",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Пользователь удален"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "NOT_FOUND",
+                  "reason": "The required object was not found.",
+                  "message": "User with id=555 was not found",
+                  "timestamp": "2022-09-07 09:10:50"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Пользователь с указанным ID не найден"
+          }
+        },
+        "summary": "Удаление своей учетной записи",
+        "tags": [
+          "Пользователи"
+        ]
+      }
+    },
+    "/user/register": {
+      "post": {
+        "description": "Регистрация нового пользователя",
+        "operationId": "createUser",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewUserDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NewUserDto"
+                }
+              }
+            },
+            "description": "Пользователь создан"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "BAD_REQUEST",
+                  "reason": "Incorrectly made request.",
+                  "message": "Failed to convert value of type java.lang.String to required type long; nested exception is java.lang.NumberFormatException: For input string: ad",
+                  "timestamp": "2022-09-07 09:10:50"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Запрос составлен некорректно"
+          }
+        },
+        "summary": "Регистрация нового пользователя",
+        "tags": [
+          "Все публичные запросы"
+        ]
+      }
+    },
+    "/events": {
+      "get": {
+        "description": "В случае, если категория события не передана, возвращаются все события, отсортированные по времени",
+        "operationId": "getEvents",
+        "parameters": [
+          {
+            "description": "Искать события определенной категории",
+            "in": "query",
+            "name": "category",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/Category"
+            }
+          },
+          {
+            "description": "Номер страницы",
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "minimum": 1,
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "description": "Количество элементов на странице",
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EventDto"
+                  }
+                }
+              }
+            },
+            "description": "Найдены мероприятия"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "BAD_REQUEST",
+                  "reason": "Incorrectly made request.",
+                  "message": "Failed to convert value of type java.lang.String to required type int; nested exception is java.lang.NumberFormatException: For input string: ad",
+                  "timestamp": "2022-09-07 09:10:50"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Запрос составлен некорректно"
+          }
+        },
+        "summary": "Получение событий по категории",
+        "tags": [
+          "Все публичные запросы"
+        ]
+      }
+    },
+    "/requests": {
+      "get": {
+        "description": "В случае, если название компании не передано, возвращаются все запросы, отсортированные по времени",
+        "operationId": "getRequests",
+        "parameters": [
+          {
+            "description": "Искать запросы в определенную компанию",
+            "in": "query",
+            "name": "organization",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Номер страницы",
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "minimum": 1,
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "description": "Количество элементов на странице",
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RequestDto"
+                  }
+                }
+              }
+            },
+            "description": "Найдены запросы"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "BAD_REQUEST",
+                  "reason": "Incorrectly made request.",
+                  "message": "Failed to convert value of type java.lang.String to required type int; nested exception is java.lang.NumberFormatException: For input string: ad",
+                  "timestamp": "2022-09-07 09:10:50"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Запрос составлен некорректно"
+          }
+        },
+        "summary": "Получение запросов по названию компании",
+        "tags": [
+          "Все публичные запросы"
+        ]
+      }
+    },
+    "/news": {
+      "get": {
+        "description": "В случае, если категория новостей не передана, возвращаются все новости, отсортированные по времени",
+        "operationId": "getNews",
+        "parameters": [
+          {
+            "description": "искать новости определенной категории",
+            "in": "query",
+            "name": "category",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/Category"
+            }
+          },
+          {
+            "description": "Номер страницы",
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "minimum": 1,
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "description": "количество элементов на странице",
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/NewsDto"
+                  }
+                }
+              }
+            },
+            "description": "Найдены новости"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "BAD_REQUEST",
+                  "reason": "Incorrectly made request.",
+                  "message": "Failed to convert value of type java.lang.String to required type int; nested exception is java.lang.NumberFormatException: For input string: ad",
+                  "timestamp": "2022-09-07 09:10:50"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Запрос составлен некорректно"
+          }
+        },
+        "summary": "Получение новостей по категории",
+        "tags": [
+          "Все публичные запросы"
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ApiError": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "description": "Список стектрейсов или описания ошибок",
+            "example": [
+              {
+                
+              },
+              {
+
+              }
+            ],
+            "items": {
+              "type": "string",
+              "description": "Список стектрейсов или описания ошибок",
+              "example": "[]"
+            }
+          },
+          "message": {
+            "type": "string",
+            "description": "Сообщение об ошибке",
+            "example": "Only pending events can be moderated by admin"
+          },
+          "reason": {
+            "type": "string",
+            "description": "Общее описание причины ошибки",
+            "example": "For the requested operation the conditions are not met."
+          },
+          "status": {
+            "type": "string",
+            "description": "Код статуса HTTP-ответа",
+            "example": "FORBIDDEN",
+            "enum": [
+              "100 CONTINUE",
+              "101 SWITCHING_PROTOCOLS",
+              "102 PROCESSING",
+              "103 CHECKPOINT",
+              "200 OK",
+              "201 CREATED",
+              "202 ACCEPTED",
+              "203 NON_AUTHORITATIVE_INFORMATION",
+              "204 NO_CONTENT",
+              "205 RESET_CONTENT",
+              "206 PARTIAL_CONTENT",
+              "207 MULTI_STATUS",
+              "208 ALREADY_REPORTED",
+              "226 IM_USED",
+              "300 MULTIPLE_CHOICES",
+              "301 MOVED_PERMANENTLY",
+              "302 FOUND",
+              "302 MOVED_TEMPORARILY",
+              "303 SEE_OTHER",
+              "304 NOT_MODIFIED",
+              "305 USE_PROXY",
+              "307 TEMPORARY_REDIRECT",
+              "308 PERMANENT_REDIRECT",
+              "400 BAD_REQUEST",
+              "401 UNAUTHORIZED",
+              "402 PAYMENT_REQUIRED",
+              "403 FORBIDDEN",
+              "404 NOT_FOUND",
+              "405 METHOD_NOT_ALLOWED",
+              "406 NOT_ACCEPTABLE",
+              "407 PROXY_AUTHENTICATION_REQUIRED",
+              "408 REQUEST_TIMEOUT",
+              "409 CONFLICT",
+              "410 GONE",
+              "411 LENGTH_REQUIRED",
+              "412 PRECONDITION_FAILED",
+              "413 PAYLOAD_TOO_LARGE",
+              "413 REQUEST_ENTITY_TOO_LARGE",
+              "414 URI_TOO_LONG",
+              "414 REQUEST_URI_TOO_LONG",
+              "415 UNSUPPORTED_MEDIA_TYPE",
+              "416 REQUESTED_RANGE_NOT_SATISFIABLE",
+              "417 EXPECTATION_FAILED",
+              "418 I_AM_A_TEAPOT",
+              "419 INSUFFICIENT_SPACE_ON_RESOURCE",
+              "420 METHOD_FAILURE",
+              "421 DESTINATION_LOCKED",
+              "422 UNPROCESSABLE_ENTITY",
+              "423 LOCKED",
+              "424 FAILED_DEPENDENCY",
+              "425 TOO_EARLY",
+              "426 UPGRADE_REQUIRED",
+              "428 PRECONDITION_REQUIRED",
+              "429 TOO_MANY_REQUESTS",
+              "431 REQUEST_HEADER_FIELDS_TOO_LARGE",
+              "451 UNAVAILABLE_FOR_LEGAL_REASONS",
+              "500 INTERNAL_SERVER_ERROR",
+              "501 NOT_IMPLEMENTED",
+              "502 BAD_GATEWAY",
+              "503 SERVICE_UNAVAILABLE",
+              "504 GATEWAY_TIMEOUT",
+              "505 HTTP_VERSION_NOT_SUPPORTED",
+              "506 VARIANT_ALSO_NEGOTIATES",
+              "507 INSUFFICIENT_STORAGE",
+              "508 LOOP_DETECTED",
+              "509 BANDWIDTH_LIMIT_EXCEEDED",
+              "510 NOT_EXTENDED",
+              "511 NETWORK_AUTHENTICATION_REQUIRED"
+            ]
+          },
+          "timestamp": {
+            "type": "string",
+            "description": "Дата и время когда произошла ошибка (в формате \"yyyy-MM-dd HH:mm:ss\")",
+            "example": "2022-06-09 06:27:23"
+          }
+        },
+        "description": "Сведения об ошибке"
+      },
+      "Category": {
+        "type": "string",
+        "description": "Список категорий новостей",
+        "example": "Вода",
+        "enum": [
+          "Вода",
+          "Свет",
+          "Газ",
+          "Отопление",
+          "Улица",
+          "Другое"
+        ]
+      },
+
+      "NewsDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Идентификатор",
+            "format": "int64",
+            "example": 1
+          },
+          "title": {
+            "type": "string",
+            "description": "Название новости",
+            "example": "Лед появился"
+          },
+          "author": {
+            "$ref": "#/components/schemas/OrginizationShortDto"
+          },
+          "location": {
+            "$ref": "#/components/schemas/Location"
+          },
+          "date": {
+            "$ref": "#/components/schemas/Date"
+          },
+          "picture": {
+            "$ref": "#/components/schemas/Picture"
+          },
+          "text": {
+            "type": "string",
+            "description": "Текст новости",
+            "example": "Скоро уберем"
+          },
+          "Survey": {
+            "$ref": "#/components/schemas/SurveyDto"
+          },
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          },
+          "category" : {
+            "$ref": "#/components/schemas/Category"
+          },
+          "comments": {
+            "type": "array",
+            "description": "Список комментариев к новости",
+            "example": [
+              {
+                "id": 1,
+                "text": "Чибипеля",
+                "commentDate": "2024-12-31 15:10:05",
+                "commentAuthor": {
+                "id": 3,
+                "name": "Даня",
+                "surname": "Красавчик"
+                }
+              }, 
+              {
+                "id": 2,
+                "text": "Чибипеля 2",
+                "commentDate": "2024-12-31 15:10:05",
+                "commentAuthor": {
+                "id": 3,
+                "name": "Даня",
+                "surname": "Красавчик"
+                }
+            }
+            ],
+            "schema": {
+              "$ref": "#/components/schemas/CommentDto"
+            }
+          }
+        },
+        "description": "Новость"
+      },
+      "NewNewsDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Название новости",
+            "example": "Лед появился"
+          },
+          "location": {
+            "$ref": "#/components/schemas/Location"
+          },
+          "date": {
+            "$ref": "#/components/schemas/Date"
+          },
+          "picture": {
+            "$ref": "#/components/schemas/Picture"
+          },
+          "text": {
+            "type": "string",
+            "description": "Текст новости",
+            "example": "Скоро уберем"
+          },
+          "Survey": {
+            "$ref": "#/components/schemas/NewSurveyDto"
+          },
+          "category" : {
+            "$ref": "#/components/schemas/Category"
+          }
+        },
+        "description": "Новость"
+      },
+      "NewCommentDto": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "description": "Текст комментария",
+            "example": "Ремонт дороги"
+          }
+        },
+        "description": "Новый комментарий"
+      },
+      "CommentDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Идентификатор",
+            "format": "int64",
+            "example": 1
+          },
+          "text": {
+            "type": "string",
+            "description": "Текст комментария",
+            "example": "Ремонт дороги"
+          },
+          "commentDate": {
+            "$ref": "#/components/schemas/Date"
+          },
+          "commentAuthor": {
+             "$ref": "#/components/schemas/UserShortDto"
+          }
+        },
+        "description": "Комментарий"
+      },
+      "SurveyDto": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Идентификатор",
+            "format": "int64",
+            "example": 1
+          },
+          "description": {
+            "type": "string",
+            "description": "Описание опроса",
+            "example": "Стоит ли покупать подержанный гараж?"
+          },
+          "options": {
+            "type": "array",
+            "description": "Описание опроса",
+            "example": [
+               {
+                "id": 1,
+                "text": "Да я люблю гаражи хочу еще один",
+                "votes": 100
+              },
+              {
+                "id": 2,
+                "text": "Нет я люблю только свой гараж",
+                "votes": 66
+              }
+            ]
+          }
+        },
+        "description": "Опрос жителей"
+      },
+      "NewSurveyDto": {
+        "type": "object",
+        "properties": {
+          "options": {
+            "type": "array",
+            "description": "Список ответов к опросу",
+            "example": ["Круто", "Плохо"]
+          },
+          "title": {
+            "type": "string",
+            "description": "Заголовок опроса",
+            "example": "Голосование за дизайн парка"
+          },
+          "description": {
+            "type": "string",
+            "description": "Описание опроса",
+            "example": "Выберите дизайн нового парка"
+          }
+        },
+        "description": "Новый опрос"
+
+      },
+      "OptionDto": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Идентификатор опции",
+            "format": "int64",
+            "example": 1
+          },
+          "text": {
+            "type": "string",
+            "description": "Текст опции",
+            "example": "Да я люблю гаражи хочу еще один"
+          },
+          "votes": {
+            "type": "integer",
+            "description": "Количество голосов",
+            "example": "100",
+            "format": "int64"
+          }
+        },
+        "description": "Опрос жителей"
+      },
+      "OrginizationShortDto": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Идентификатор",
+            "format": "int64",
+            "example": 7771272
+          },
+          "name": {
+            "type": "string",
+            "description": "Название компании",
+            "example": "ЖЭК"
+          }
+        }
+      },
+      "Picture": {
+        "parametres": {
+          "name": "Picture",
+          "in": "formData",
+          "description": "The uploaded file data",
+          "required": true,
+          "type": "file"
+        },
+        "description": "Картинка файлом"
+      },
+      "CompilationDto": {
+        "required": [
+          "id",
+          "pinned",
+          "title"
+        ],
+        "type": "object",
+        "properties": {
+          "events": {
+            "uniqueItems": true,
+            "type": "array",
+            "description": "Список событий входящих в подборку",
+            "example": [
+              {
+                "annotation": "Эксклюзивность нашего шоу гарантирует привлечение максимальной зрительской аудитории",
+                "category": {
+                  "id": 1,
+                  "name": "Концерты"
+                },
+                "confirmedRequests": 5,
+                "eventDate": "2024-03-10 14:30:00",
+                "id": 1,
+                "initiator": {
+                  "id": 3,
+                  "name": "Фёдоров Матвей"
+                },
+                "paid": true,
+                "title": "Знаменитое шоу 'Летающая кукуруза'",
+                "views": 999
+              },
+              {
+                "annotation": "За почти три десятилетия группа 'Java Core' закрепились на сцене как группа, объединяющая поколения.",
+                "category": {
+                  "id": 1,
+                  "name": "Концерты"
+                },
+                "confirmedRequests": 555,
+                "eventDate": "2025-09-13 21:00:00",
+                "id": 1,
+                "initiator": {
+                  "id": 3,
+                  "name": "Паша Петров"
+                },
+                "paid": true,
+                "title": "Концерт рок-группы 'Java Core'",
+                "views": 991
+              }
+            ],
+            "items": {
+            }
+          },
+          "id": {
+            "type": "integer",
+            "description": "Идентификатор",
+            "format": "int64",
+            "example": 1
+          },
+          "pinned": {
+            "type": "boolean",
+            "description": "Закреплена ли подборка на главной странице сайта",
+            "example": true
+          },
+          "title": {
+            "type": "string",
+            "description": "Заголовок подборки",
+            "example": "Летние концерты"
+          }
+        },
+        "description": "Подборка событий"
+      },
+      "Location": {
+        "type": "object",
+        "properties": {
+          "address": {
+            "type": "string",
+            "description": "Адрес локации",
+            "example": "Ул. Колотушкина, д. Пушкина"
+          },
+          "lat": {
+            "type": "number",
+            "description": "Широта",
+            "format": "float",
+            "example": 55.754167
+          },
+          "lon": {
+            "type": "number",
+            "description": "Долгота",
+            "format": "float",
+            "example": 37.62
+          }
+        },
+        "description": "Адрес, широта и долгота локации"
+      },
+      "Date": {
+        "type": "string",
+        "description": "Дата и время. Дата и время указываются в формате \"yyyy-MM-dd HH:mm:ss\"",
+        "example": "2024-12-31 15:10:05"
+      },
+      "NewUserDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "maxLength": 254,
+            "minLength": 6,
+            "type": "string",
+            "description": "Почтовый адрес",
+            "example": "petrov.i@mail.ru"
+          },
+          "address": {
+            "type": "string",
+            "minLength": 10,
+            "description": "Адрес проживания",
+            "example": "ул. Пушкина, д.3"
+          },
+          "name": {
+            "minLength": 1,
+            "maxLength": 100,
+            "type": "string",
+            "description": "Имя",
+            "example": "Даниил"
+          },
+          "surname": {
+            "minLength": 1,
+            "maxLength": 100,
+            "type": "string",
+            "description": "Фамилия",
+            "example": "Чибиток"
+          },
+          "password": {
+            "minLength": 1,
+            "maxLength": 100,
+            "type": "string",
+            "description": "Фамилия",
+            "example": "Чибиток"
+          }
+
+        },
+        "description": "Пользователь (житель)"
+      },
+      "UserDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "Почтовый адрес",
+            "example": "petrov.i@mail.ru"
+          },
+          "id": {
+            "type": "integer",
+            "description": "Идентификатор",
+            "format": "int64",
+            "readOnly": true,
+            "example": 1
+          },
+          "name": {
+            "type": "string",
+            "description": "Имя",
+            "example": "Даниил"
+          },
+          "surname": {
+            "type": "string",
+            "description": "Фамилия",
+            "example": "Чибиток"
+          }
+        },
+        "description": "Пользователь (житель)"
+      },
+      "EventDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Идентификатор",
+            "format": "int64",
+            "example": 1
+          },
+          "title": {
+            "type": "string",
+            "description": "Название мероприятия",
+            "example": "Ремонт дороги"
+          },
+          "text": {
+            "type": "string",
+            "description": "Описание мероприятия",
+            "example": "Ремонт продлится с 01.01.2023 до 02.01.2023"
+          },
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          },
+          "category": {
+            "$ref": "#/components/schemas/Category"
+          },
+          "author": {
+            "$ref": "#/components/schemas/OrginizationShortDto"
+          },
+          "location": {
+            "$ref": "#/components/schemas/Location"
+          },
+          "date": {
+            "$ref": "#/components/schemas/Date"
+          },
+          "picture": {
+            "$ref": "#/components/schemas/Picture"
+          },
+          "comments": {
+            "type": "array",
+            "description": "Список комментариев к новости",
+            "example": [
+              {
+                "id": 1,
+                "text": "Чибипеля",
+                "commentDate": "2024-12-31 15:10:05",
+                "commentAuthor": {
+                "id": 3,
+                "name": "Даня",
+                "surname": "Красавчик"
+                }
+              }, 
+              {
+                "id": 2,
+                "text": "Чибипеля 2",
+                "commentDate": "2024-12-31 15:10:05",
+                "commentAuthor": {
+                "id": 3,
+                "name": "Даня",
+                "surname": "Красавчик"
+                }
+            }
+            ],
+            "schema": {
+              "$ref": "#/components/schemas/CommentDto"
+            }
+          }
+        }
+      },
+      "NewEventDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Название мероприятия",
+            "example": "Ремонт дороги"
+          },
+          "text": {
+            "type": "string",
+            "description": "Описание мероприятия",
+            "example": "Ремонт продлится с 01.01.2023 до 02.01.2023"
+          },
+          "category": {
+            "$ref": "#/components/schemas/Category"
+          },
+          "location": {
+            "$ref": "#/components/schemas/Location"
+          },
+          "date": {
+            "$ref": "#/components/schemas/Date"
+          },
+          "picture": {
+            "$ref": "#/components/schemas/Picture"
+          }
+        }
+      },
+      "RequestDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Идентификатор",
+            "format": "int64",
+            "example": 1
+          },
+          "title": {
+            "type": "string",
+            "description": "Название запроса",
+            "example": "Почините водопровод"
+          },
+          "text": {
+            "type": "string",
+            "description": "Описание запроса",
+            "example": "Почините водопровод по адресу ул. Пушкина, д.3"
+          },
+          "initiator": {
+            "$ref": "#/components/schemas/UserDto"
+          },
+          "receiver": {
+          },
+          "request_date": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Дата создания запроса",
+            "example": "2023-11-24T12:00:00Z"
+          },
+          "status": {
+            "type": "string",
+            "description": "Статус выполнения запроса",
+            "example": "В обработке"
+          },
+          "responses": {
+            "type": "array",
+            "description": "Статус выполнения запроса",
+            "example": [
+              {
+                "id": 1,
+                "text": "Выслали ремонтников, скоро будут на месте",
+                "picture": "string",
+                "rating": 1
+              },
+              {
+                "id": 2,
+                "text": "Неисправность устранена",
+                "picture": "string",
+                "rating": 5
+              }
+            ],
+            "schema": {
+              "$ref": "#/components/schemas/ResponseDto"
+            }
+          }, 
+          "comments": {
+            "type": "array",
+            "description": "Список комментариев к новости",
+            "example": [
+              {
+                "id": 1,
+                "text": "Чибипеля",
+                "commentDate": "2024-12-31 15:10:05",
+                "commentAuthor": {
+                "id": 3,
+                "name": "Даня",
+                "surname": "Красавчик"
+                }
+              }, 
+              {
+                "id": 2,
+                "text": "Чибипеля 2",
+                "commentDate": "2024-12-31 15:10:05",
+                "commentAuthor": {
+                "id": 3,
+                "name": "Даня",
+                "surname": "Красавчик"
+                }
+            }
+            ],
+            "schema": {
+              "$ref": "#/components/schemas/CommentDto"
+            }
+          }
+        },
+        "description": "Запрос от жителя к администрации"
+      },
+      "NewRequestDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Название запроса",
+            "example": "Почините водопровод"
+          },
+          "text": {
+            "type": "string",
+            "description": "Описание запроса",
+            "example": "Почините водопровод по адресу ул. Пушкина, д.3"
+          },
+          "picture": {
+            "$ref": "#/components/schemas/Picture"
+          }
+        },
+        "description": "Новое обращение к администрации от жителя"
+      },
+      "NewResponseDto": {
+         "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "description": "Содержание ответа на запрос",
+            "example": "Неисправность устранена"
+          },
+          "picture": {
+            "$ref": "#/components/schemas/Picture"
+          }
+        },
+        "description": "Новый ответ организации на обращение"
+      },
+      "ResponseDto": {
+         "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Идентификатор",
+            "format": "int64",
+            "example": 1
+          },
+          "text": {
+            "type": "string",
+            "description": "Содержание ответа на запрос",
+            "example": "Неисправность устранена"
+          },
+          "picture": {
+            "$ref": "#/components/schemas/Picture"
+          }, 
+          "rating": {
+            "type": "number",
+            "description": "Оценка ответа от пользователей ",
+            "format": "float",
+            "example": 1
+          }
+        },
+        "description": "Новый ответ организации на обращение"
+      },
+      "Status": {
+        "type": "string",
+        "description": "Список состояний жизненного цикла новости/события",
+        "example": "PUBLISHED",
+        "enum": [
+          "Ожидание модерации",
+          "Опубликовано",
+          "Отказано в публикации"
+        ]
+      },
+      "RequestStatus": {
+        "type": "string",
+        "description": "Список состояний запроса",
+        "example": "Выполнено",
+        "enum": [
+          "Выполнено",
+          "В процессе",
+          "В обработке",
+          "Отказано"
+        ]
+      },
+      "UserShortDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Идентификатор",
+            "format": "int64",
+            "example": 3
+          },
+          "name": {
+            "type": "string",
+            "description": "Имя",
+            "example": "Даня"
+          },
+          "surname": {
+            "type": "string",
+            "description": "Фамилия",
+            "example": "Красавчик"
+          }
+        },
+        "description": "Пользователь (краткая информация)"
+      },
+      "NewOrginizationDto": {
+        "type": "object",
+        "properties": {
+          "inn": {
+            "type": "number",
+            "description": "ИНН на сервере преобразовываться в id",
+            "example": "123456789012"
+          },
+          "email": {
+            "type": "string",
+            "description": "Почта",
+            "example": "exaple@mail.ru"
+          },
+          "name": {
+            "type": "string",
+            "description": "Название",
+            "example": "Сутенерская ОЭ по району Отрадное"
+          },
+          "address": {
+            "type": "string",
+            "description": "Адрес",
+            "example": "проезд Якушкина, 4, Москва, 127273"
+          },
+          "password": {
+            "type": "string",
+            "description": "Пароль",
+            "example": "password"
+          }
+        },
+        "description": "Новая организация (создается администратором)"
+      }
+    }
+  }
+}
