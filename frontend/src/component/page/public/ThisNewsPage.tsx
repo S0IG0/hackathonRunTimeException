@@ -2,6 +2,7 @@ import {useParams} from "react-router-dom";
 import {Category, NewsDto, Status} from "@api/type.ts";
 import {NotFoundPage} from "@page/public/NotFoundPage.tsx";
 import {CommentsList} from "@ui/comment/CommentsList.tsx";
+import {Survey} from "@ui/Survey.tsx";
 
 const data: NewsDto[] = [
     {
@@ -93,6 +94,7 @@ export const ThisNewsPage = () => {
                 </div>
             </div>
 
+            {news.Survey && <Survey survey={news.Survey}/>}
             {news.comments && <CommentsList comments={news.comments}/>}
         </>
     );

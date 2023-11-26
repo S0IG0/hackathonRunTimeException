@@ -39,10 +39,16 @@ export const NavigationBar = observer(() => {
             </header>
 
             <Routes location={location}>
-                {pages.filter(page =>
-                    page.visibly.includes(Role.PUBLIC) ||
-                    page.visibly.includes(Role.PUBLIC_HIDE) ||
-                    page.visibly.includes(currentRole)
+                {pages.filter(page => {
+                        const value =
+                            page.visibly.includes(Role.PUBLIC) ||
+                            page.visibly.includes(Role.PUBLIC_HIDE) ||
+                            page.visibly.includes(currentRole)
+                        if (isAuth) {
+                            return !page.visibly.includes(Role.PUBLIC_ONLY_NOT_AUTH) && value;
+                        }
+                        return value
+                    }
                 ).map(page => (
                     <Route
                         path={page.path}

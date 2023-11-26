@@ -2,7 +2,7 @@ import {useState} from "react";
 import {OtherService} from "@store/store.ts";
 import {UserLogin} from "@page/public/LoginPage.tsx";
 
-interface UserRegister extends UserLogin{
+export interface UserRegister extends UserLogin{
     address: string
     name: string
     surname: string

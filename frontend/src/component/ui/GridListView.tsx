@@ -6,7 +6,7 @@ interface Props {
 
 export const GridListView = ({array}: Props) => {
     return (
-        <div className="row justify-content-lg-between justify-content-sm-center">
+        <div className="row justify-content-lg-between justify-content-sm-center justify-content-center">
             {array}
         </div>
     );
